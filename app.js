@@ -76,7 +76,15 @@ const elements = {
   modalBodyContent: document.getElementById('modal-body-content'),
   toast: document.getElementById('toast'),
   toastIcon: document.getElementById('toast-icon'),
-  toastMessage: document.getElementById('toast-message')
+  toastMessage: document.getElementById('toast-message'),
+  
+  // Settings elements
+  btnSettingsToggle: document.getElementById('btn-settings-toggle'),
+  settingsModal: document.getElementById('settings-modal'),
+  closeSettingsModal: document.getElementById('close-settings-modal'),
+  settingsApiKey: document.getElementById('settings-api-key'),
+  settingsApiStatus: document.getElementById('settings-api-status'),
+  btnSaveSettings: document.getElementById('btn-save-settings')
 };
 
 // Initialize App
@@ -110,26 +118,48 @@ function showToast(message, isError = false) {
   }, 3000);
 }
 
-// Read API Key from local served .env
+// Read API Key from local served .env or browser sandbox local storage
 async function loadEnv() {
+  // 1. Try local storage first (pasted from deployment settings modal)
+  state.apiKey = localStorage.getItem('spoonacular_api_key') || '';
+  if (state.apiKey) {
+    console.log("Spoonacular API Key loaded from local storage.");
+    return;
+  }
+
+  // 2. Try fetching local .env file (standard for local dev)
   try {
     const response = await fetch('.env');
-    if (!response.ok) return;
-    const text = await response.text();
-    const lines = text.split('\n');
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (trimmed.startsWith('#') || trimmed === '') continue;
-      const parts = trimmed.split('=');
-      if (parts[0].trim() === 'SPOONACULAR_API_KEY') {
-        state.apiKey = parts.slice(1).join('=').trim().replace(/['"]/g, '');
-        if (state.apiKey !== '') {
-          console.log("Spoonacular API Key successfully loaded from secure .env file.");
+    if (response.ok) {
+      const text = await response.text();
+      const lines = text.split('\n');
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed.startsWith('#') || trimmed === '') continue;
+        const parts = trimmed.split('=');
+        if (parts[0].trim() === 'SPOONACULAR_API_KEY') {
+          state.apiKey = parts.slice(1).join('=').trim().replace(/['"]/g, '');
+          if (state.apiKey) {
+            console.log("Spoonacular API Key successfully loaded from secure local .env file.");
+          }
         }
       }
     }
   } catch (err) {
     console.warn("Could not read local .env file. Running in local fallback mode.", err);
+  }
+}
+
+function updateSettingsUI() {
+  if (!elements.settingsApiKey) return;
+  elements.settingsApiKey.value = state.apiKey;
+  
+  if (state.apiKey && state.apiKey.trim() !== '') {
+    elements.settingsApiStatus.className = 'api-status-tag online';
+    elements.settingsApiStatus.textContent = 'Connected (Live API)';
+  } else {
+    elements.settingsApiStatus.className = 'api-status-tag offline';
+    elements.settingsApiStatus.textContent = 'Offline Fallback';
   }
 }
 
@@ -156,6 +186,42 @@ function goToStep(step) {
 
 // Event Listeners
 function setupEventListeners() {
+  // Settings modal triggers
+  if (elements.btnSettingsToggle) {
+    elements.btnSettingsToggle.addEventListener('click', () => {
+      updateSettingsUI();
+      elements.settingsModal.classList.add('active');
+    });
+  }
+
+  if (elements.closeSettingsModal) {
+    elements.closeSettingsModal.addEventListener('click', () => {
+      elements.settingsModal.classList.remove('active');
+    });
+  }
+
+  if (elements.settingsModal) {
+    elements.settingsModal.querySelector('.modal-backdrop').addEventListener('click', () => {
+      elements.settingsModal.classList.remove('active');
+    });
+  }
+
+  if (elements.btnSaveSettings) {
+    elements.btnSaveSettings.addEventListener('click', () => {
+      const val = elements.settingsApiKey.value.trim();
+      state.apiKey = val;
+      if (val) {
+        localStorage.setItem('spoonacular_api_key', val);
+        showToast("Settings saved! Connected to Spoonacular API.");
+      } else {
+        localStorage.removeItem('spoonacular_api_key');
+        showToast("Settings saved! Switched to offline fallback mode.");
+      }
+      updateSettingsUI();
+      elements.settingsModal.classList.remove('active');
+    });
+  }
+
   // Wizard Next/Back buttons
   document.querySelectorAll('.btn-next').forEach(btn => {
     btn.addEventListener('click', () => {

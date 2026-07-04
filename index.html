@@ -29,6 +29,7 @@
       </div>
       <div class="header-meta">
         <span class="live-date"><i data-lucide="calendar"></i> <span id="current-date">Saturday, July 4</span></span>
+        <button class="btn-settings-toggle" id="btn-settings-toggle" title="App Settings"><i data-lucide="settings"></i></button>
       </div>
     </header>
 
@@ -320,6 +321,27 @@
       <button class="modal-close" id="close-modal"><i data-lucide="x"></i></button>
       <div id="modal-body-content">
         <!-- Dynamically rendered detailed recipes -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Configuration Modal -->
+  <div class="modal" id="settings-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content modal-sm">
+      <button class="modal-close" id="close-settings-modal"><i data-lucide="x"></i></button>
+      <div class="modal-settings-body">
+        <h3 class="modal-settings-title"><i data-lucide="settings"></i> App Settings</h3>
+        <p class="modal-settings-desc">To fetch live recipes on GitHub Pages, enter your Spoonacular API key below. It will be stored securely in your browser's local sandbox.</p>
+        <div class="settings-form-group">
+          <label for="settings-api-key">Spoonacular API Key</label>
+          <input type="password" id="settings-api-key" placeholder="Paste your API key here..." autocomplete="off">
+        </div>
+        <div class="settings-status-row">
+          <span>Status:</span>
+          <span id="settings-api-status" class="api-status-tag offline">Offline Mode</span>
+        </div>
+        <button class="btn btn-primary btn-full" id="btn-save-settings">Save Configurations</button>
       </div>
     </div>
   </div>
