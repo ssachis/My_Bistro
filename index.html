@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyBistro - Minimal Meal Curation & Planning Flow</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <i data-lucide="chef-hat"></i>
+        </div>
+        <div>
+          <h1>MyBistro</h1>
+          <p class="tagline">Spacious, step-by-step cooking timeline curation</p>
+        </div>
+      </div>
+      <div class="header-meta">
+        <span class="live-date"><i data-lucide="calendar"></i> <span id="current-date">Saturday, July 4</span></span>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="app-main-layout">
+      
+      <!-- WIZARD AREA -->
+      <section class="wizard-card">
+        
+        <!-- Minimal Progress Indicator -->
+        <div class="progress-indicator-bar" id="wizard-progress-indicator">
+          <div class="progress-indicator-fill" id="wizard-progress-fill" style="width: 25%;"></div>
+        </div>
+
+        <!-- STEP 1: CRAVINGS -->
+        <div class="wizard-step active" id="step-1">
+          <div class="question-header">
+            <span class="step-badge">Question 1 of 3</span>
+            <h2>What are you in the mood for today?</h2>
+            <p>Tell us what you feel like eating (e.g., spicy, warm, pasta, chicken, sweet breakfast).</p>
+          </div>
+
+          <div class="input-container-large">
+            <i data-lucide="search" class="search-large-icon"></i>
+            <input type="text" id="cravings-input" placeholder="Enter cravings, ingredients, or food moods..." autocomplete="off">
+          </div>
+
+          <div class="suggestions-chips-row">
+            <span class="suggest-chip">spicy curry</span>
+            <span class="suggest-chip">warm noodles</span>
+            <span class="suggest-chip">salmon</span>
+            <span class="suggest-chip">pancakes</span>
+            <span class="suggest-chip">garlic chicken</span>
+            <span class="suggest-chip">sweet berries</span>
+          </div>
+
+          <div class="wizard-actions-row justify-end">
+            <button class="btn btn-primary btn-next" data-next-step="2">
+              Next Step <i data-lucide="arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 2: DIETARY RESTRICTIONS -->
+        <div class="wizard-step" id="step-2">
+          <div class="question-header">
+            <span class="step-badge">Question 2 of 3</span>
+            <h2>Do you have any dietary restrictions?</h2>
+            <p>We'll filter out recipes and find alternatives that match your diet style.</p>
+          </div>
+
+          <div class="restrictions-grid">
+            <button class="restriction-card-btn" data-diet="Keto">
+              <span class="btn-emoji">🔥</span>
+              <span class="btn-title">Keto</span>
+              <span class="btn-subtext">Low carb, high fat</span>
+            </button>
+            <button class="restriction-card-btn" data-diet="Gluten-Free">
+              <span class="btn-emoji">🌾</span>
+              <span class="btn-title">Gluten-Free</span>
+              <span class="btn-subtext">No wheat or gluten</span>
+            </button>
+            <button class="restriction-card-btn" data-diet="Vegan">
+              <span class="btn-emoji">🌱</span>
+              <span class="btn-title">Vegan</span>
+              <span class="btn-subtext">100% plant-based</span>
+            </button>
+            <button class="restriction-card-btn" data-diet="Vegetarian">
+              <span class="btn-emoji">🥕</span>
+              <span class="btn-title">Vegetarian</span>
+              <span class="btn-subtext">Meat-free, dairy allowed</span>
+            </button>
+            <button class="restriction-card-btn" data-diet="Dairy-Free">
+              <span class="btn-emoji">🥛</span>
+              <span class="btn-title">Dairy-Free</span>
+              <span class="btn-subtext">No milk or butter products</span>
+            </button>
+            <button class="restriction-card-btn" data-diet="Nut-Free">
+              <span class="btn-emoji">🥜</span>
+              <span class="btn-title">Nut-Free</span>
+              <span class="btn-subtext">Safe from tree nuts & peanuts</span>
+            </button>
+          </div>
+
+          <div class="wizard-actions-row">
+            <button class="btn btn-secondary btn-prev" data-prev-step="1">
+              <i data-lucide="arrow-left"></i> Back
+            </button>
+            <button class="btn btn-primary btn-next" data-next-step="3">
+              Next Step <i data-lucide="arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3: BUDGET & PORTIONS -->
+        <div class="wizard-step" id="step-3">
+          <div class="question-header">
+            <span class="step-badge">Question 3 of 3</span>
+            <h2>Let's set your budget & schedule.</h2>
+            <p>Define your maximum cost threshold and day pacing.</p>
+          </div>
+
+          <div class="budget-setup-block">
+            <!-- Daily budget input -->
+            <div class="budget-range-card">
+              <div class="card-header-flex">
+                <span class="cfg-title"><i data-lucide="indian-rupee"></i> Daily Budget Cap</span>
+                <span id="budget-display-val" class="cfg-value">₹500</span>
+              </div>
+              <input type="range" id="budget-slider" min="100" max="2000" value="500" step="50" class="minimal-slider">
+              <div class="slider-labels">
+                <span>₹100</span>
+                <span>₹1000</span>
+                <span>₹2000</span>
+              </div>
+            </div>
+
+            <!-- Schedule Select cards -->
+            <div class="schedule-setup-card">
+              <span class="cfg-title"><i data-lucide="calendar-days"></i> Day Schedule Pacing</span>
+              <div class="schedule-pills-row">
+                <button class="schedule-pill active" data-schedule="standard">
+                  <span class="pill-icon">📅</span>
+                  <div>
+                    <span class="pill-title">Standard</span>
+                    <span class="pill-desc">Meal-by-meal prep</span>
+                  </div>
+                </button>
+                <button class="schedule-pill" data-schedule="busy">
+                  <span class="pill-icon">⚡</span>
+                  <div>
+                    <span class="pill-title">Busy Day</span>
+                    <span class="pill-desc">Morning prep bundling</span>
+                  </div>
+                </button>
+                <button class="schedule-pill" data-schedule="leisurely">
+                  <span class="pill-icon">☕</span>
+                  <div>
+                    <span class="pill-title">Leisurely</span>
+                    <span class="pill-desc">Slow cooking recipes</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Portion scale -->
+            <div class="portions-scale-card">
+              <div class="portions-flex">
+                <div>
+                  <span class="cfg-title"><i data-lucide="users"></i> Portion Multiplier</span>
+                  <p class="cfg-subtitle">Scale all ingredients & calculations</p>
+                </div>
+                <div class="portions-counter-widget">
+                  <button class="port-btn" id="btn-dec-port"><i data-lucide="minus"></i></button>
+                  <span class="port-value" id="val-portions">1</span>
+                  <button class="port-btn" id="btn-inc-port"><i data-lucide="plus"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wizard-actions-row">
+            <button class="btn btn-secondary btn-prev" data-prev-step="2">
+              <i data-lucide="arrow-left"></i> Back
+            </button>
+            <button class="btn btn-primary" id="btn-generate-plan">
+              Curate My Cooking Plan <i data-lucide="sparkles"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 4: FINAL RESULTS DASHBOARD -->
+        <div class="wizard-step" id="step-4">
+          <div class="results-dashboard-header">
+            <div>
+              <span class="results-success-badge"><i data-lucide="check-circle2"></i> Plan Curated</span>
+              <h2>Your bistro day plan is ready!</h2>
+            </div>
+            
+            <!-- Dynamic cost display floating indicator -->
+            <div class="dashboard-cost-bubble" id="results-cost-summary-card">
+              <span class="cost-lbl">Estimated Cost:</span>
+              <span class="cost-val" id="results-total-cost">₹0</span>
+              <span class="cost-status-badge" id="results-budget-badge">Good</span>
+            </div>
+          </div>
+
+          <!-- Tabs menu navigation -->
+          <nav class="dashboard-tabs">
+            <button class="tab-btn active" data-tab="meals">
+              <span class="tab-emoji">🥘</span> Curated Meal Plan
+            </button>
+            <button class="tab-btn" data-tab="groceries">
+              <span class="tab-emoji">🛒</span> Grocery List & Swaps
+            </button>
+            <button class="tab-btn" data-tab="timeline">
+              <span class="tab-emoji">⏱️</span> Cooking Timeline
+            </button>
+          </nav>
+
+          <!-- TAB CONTENT: MEAL PLAN -->
+          <div class="tab-pane active" id="pane-meals">
+            <div class="meals-grid-columns">
+              <!-- Breakfast -->
+              <div class="meal-col" id="col-breakfast">
+                <div class="meal-col-banner breakfast">
+                  <span>🍳 Breakfast Choice</span>
+                  <button class="btn-shuffle-item" data-meal-type="breakfast"><i data-lucide="shuffle"></i> Swap</button>
+                </div>
+                <div class="meal-card-target-div"></div>
+              </div>
+              
+              <!-- Lunch -->
+              <div class="meal-col" id="col-lunch">
+                <div class="meal-col-banner lunch">
+                  <span>🥗 Lunch Choice</span>
+                  <button class="btn-shuffle-item" data-meal-type="lunch"><i data-lucide="shuffle"></i> Swap</button>
+                </div>
+                <div class="meal-card-target-div"></div>
+              </div>
+
+              <!-- Dinner -->
+              <div class="meal-col" id="col-dinner">
+                <div class="meal-col-banner dinner">
+                  <span>🥩 Dinner Choice</span>
+                  <button class="btn-shuffle-item" data-meal-type="dinner"><i data-lucide="shuffle"></i> Swap</button>
+                </div>
+                <div class="meal-card-target-div"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT: GROCERIES -->
+          <div class="tab-pane" id="pane-groceries">
+            <div class="groceries-single-layout">
+              <div class="section-title-bar">
+                <h3><i data-lucide="shopping-basket"></i> Aisle Checklist & Smart Swaps</h3>
+                <span class="section-subtitle">Check off ingredients you already have at home (which deducts them from your budget total). Swap premium elements inline below.</span>
+              </div>
+              <div class="grocery-legend">
+                <i data-lucide="star"></i>
+                <span><strong>Legend:</strong> The <strong>⭐ Core</strong> label indicates ingredients vital to the flavor and structure of the recipe (cannot be skipped or omitted).</span>
+              </div>
+              <div id="groceries-list-target">
+                <!-- Grouped aisles and inline swaps will render here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT: TIMELINE -->
+          <div class="tab-pane" id="pane-timeline">
+            <div class="timeline-dashboard-layout">
+              <div class="timeline-summary-bar">
+                <div class="timeline-meta-badges">
+                  <span class="timeline-meta-badge"><i data-lucide="calendar"></i> <span id="timeline-pacing-val">Standard</span></span>
+                  <span class="timeline-meta-badge"><i data-lucide="timer"></i> <span id="timeline-prep-val">0 min prep</span></span>
+                  <span class="timeline-meta-badge"><i data-lucide="activity"></i> <span id="timeline-diff-val">Easy</span></span>
+                </div>
+                <div class="timeline-progress-status">
+                  <span class="prog-label">Timeline progress: <span id="lbl-progress-count">0 / 0</span></span>
+                  <div class="prog-track">
+                    <div class="prog-fill" id="timeline-progress-fill" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interactive timeline vertical stack -->
+              <div class="timeline- checklist-area" id="timeline-tasks-target">
+                <!-- Checklist tasks render here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="results-actions-bar">
+            <button class="btn btn-secondary" id="btn-back-to-wizard"><i data-lucide="arrow-left"></i> Edit Preferences</button>
+            <button class="btn btn-success" id="btn-cook-mode"><i data-lucide="check-check"></i> Save & Open Cooking View</button>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- Dialog / Details Modal -->
+  <div class="modal" id="details-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close" id="close-modal"><i data-lucide="x"></i></button>
+      <div id="modal-body-content">
+        <!-- Dynamically rendered detailed recipes -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast" id="toast">
+    <i data-lucide="info" id="toast-icon"></i>
+    <span id="toast-message">Notification message here</span>
+  </div>
+
+  <!-- Application logic modules -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
